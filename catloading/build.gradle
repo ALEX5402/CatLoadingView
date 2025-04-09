@@ -1,0 +1,65 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+}
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
+
+task androidJar(type: Jar) {
+    archiveClassifier.set('release')
+    from "$buildDir/intermediates/compile_library_classes/release/"
+}
+
+task makeJar(type: Copy) {
+    delete 'build/libs/yourlib.jar'
+    from('build/intermediates/aar_main_jar/release/')
+    into('build/libs/')
+    include('classes.jar')
+    rename ('classes.jar', 'catloading.jar')
+}
+
+
+artifacts {
+    archives androidSourcesJar
+    archives androidJar
+}
+
+android {
+    namespace 'com.roger.catloadinglibrary'
+    compileSdk 35
+
+    defaultConfig {
+        minSdk 19
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+}
+
+dependencies {
+
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
+    implementation libs.material
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.junit
+    androidTestImplementation libs.androidx.espresso.core
+
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
