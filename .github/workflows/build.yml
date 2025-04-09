@@ -1,0 +1,33 @@
+name: Build and Upload Dependency JAR
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-dependency-jar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build dependency JAR
+        run: |
+          ./gradlew assemble
+          mkdir -p output
+          find . -type f -name '*.jar' -exec cp {} output/ \;
+
+      - name: Upload Dependency JAR as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-jar
+          path: output/*.jar
