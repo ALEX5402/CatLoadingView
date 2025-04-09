@@ -1,4 +1,4 @@
-name: Build and Upload Dependency JAR
+name: Build and Upload aar
 
 on:
   push:
