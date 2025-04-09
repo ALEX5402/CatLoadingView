@@ -31,7 +31,7 @@ jobs:
 
       - name: Build dependency JAR
         run: |
-          ./gradlew clean assembleRelease makeJar
+          ./gradlew clean assembleRelease
           mkdir -p output
           find . -type f -name '*.aar' -exec cp {} output/ \;
 
