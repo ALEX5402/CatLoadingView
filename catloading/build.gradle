@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
+
 task androidSourcesJar(type: Jar) {
     archiveClassifier.set('sources')
     from android.sourceSets.main.java.srcDirs
@@ -11,15 +12,6 @@ task androidJar(type: Jar) {
     archiveClassifier.set('release')
     from "$buildDir/intermediates/compile_library_classes/release/"
 }
-
-task makeJar(type: Copy) {
-    delete 'build/libs/yourlib.jar'
-    from('build/intermediates/aar_main_jar/release/')
-    into('build/libs/')
-    include('classes.jar')
-    rename ('classes.jar', 'catloading.jar')
-}
-
 
 artifacts {
     archives androidSourcesJar
