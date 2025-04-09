@@ -3,6 +3,9 @@ name: Build and Upload Dependency JAR
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-dependency-jar:
     runs-on: ubuntu-latest
@@ -19,6 +22,9 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
+
+      - name: Set executable permission for Gradle wrapper
+        run: chmod +x ./gradlew
 
       - name: Build dependency JAR
         run: |
